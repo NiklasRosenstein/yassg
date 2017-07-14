@@ -248,8 +248,12 @@ class Renderer(object):
     if not path and not ref:
       return ''
     if not path:
-      return '/'.join(['..'] * (ref.count('/') + 1))
-    return posixpath.relpath(path, ref)
+      res = '/'.join(['..'] * (ref.count('/') + 1))
+    else:
+      res = posixpath.relpath(path, ref)
+    if self.trailing_slashes and not res.endswith('/'):
+      res += '/'
+    return res
 
   def url_for(self, path_or_page):
     """
