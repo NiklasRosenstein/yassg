@@ -26,11 +26,6 @@
     }
     </style>
 
-    <!-- GitHub -->
-    {% if config['github-repository'] %}
-      <script async defer src="https://buttons.github.io/buttons.js"></script>
-    {% endif %}
-
     <!-- Google Analytics -->
     {% if config['google-analytics'] %}
       <script>
@@ -83,17 +78,8 @@
 
       <!-- GitHub -->
       {% if config['github-repository'] %}
-        <span class="item right">
-          <a href="https://github.com/{{ config['github-repository'] }}">{{ config['github-repository'] }}</a>
-          &nbsp;&nbsp;
-          <a class="github-button" href="https://github.com/{{ config['github-repository'] }}/stargazers"
-            data-icon="octicon-star" aria-label="Star {{ config['github-repository'] }} on GitHub">Star</a>
-          &nbsp;
-          <a class="github-button" href="https://github.com/{{ config['github-repository'] }}/subscription"
-            data-icon="octicon-eye" aria-label="Watch {{ config['github-repository'] }} on GitHub">Watch</a>
-        </span>
+        <a class="item right floated" href="https://github.com/{{ config['github-repository'] }}"><i class="github icon"></i>{{ config['github-repository'] }}</a>
       {% endif %}
-
       </div>
     </div>
 
