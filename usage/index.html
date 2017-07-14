@@ -6,11 +6,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.js"></script>
     <link rel="stylesheet" href="../static/style.css">
     <style>
-    .main.container {
-      margin-top: 7em;
-    }
-    .wireframe {
-      margin-top: 2em;
+    h1, h2, h3, h4, h5, h6 {
+      padding-top: 60px;
+      margin-top: -50px;
     }
     .ui.footer.segment {
       margin: 5em 0em 0em;
@@ -20,6 +18,9 @@
       padding: 0.5em 1em;
       background-color: #eee;
       overflow: auto;
+    }
+    #disqus_thread {
+      margin-top: 7em;
     }
     </style>
 
@@ -75,9 +76,24 @@
       </div>
     </div>
 
-    <!-- content -->
-    <div class="ui main text container">
-      <h2>Installation</h2>
+    <div class="ui grid container main">
+      <div class="four wide column">
+        <h1>Table of Contents</h1>
+        <div class="toc">
+<ul>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#command-line-interface">Command-line Interface</a></li>
+<li><a href="#configuration">Configuration</a></li>
+<li><a href="#directory-layout">Directory layout</a></li>
+<li><a href="#page-configuration">Page configuration</a></li>
+</ul>
+</div>
+
+      </div>
+      <div class="twelve wide column">
+        <!-- content -->
+        <div class="ui text container">
+          <h2 id="installation">Installation</h2>
 <p>Yassg is built is built with <a href="https://nodepy.org/">Node.py</a> and Python 3. To install Node.py,
 install it just like any other Python module via Pip.</p>
 <div class="codehilite"><pre><span></span>$ pip3 install node.py
@@ -89,7 +105,7 @@ install it just like any other Python module via Pip.</p>
 </pre></div>
 
 
-<h2>Command-line Interface</h2>
+<h2 id="command-line-interface">Command-line Interface</h2>
 <p>Invoking Yassg will builds the full documentation. When you set up the build
 directory as a <a href="https://git-scm.com/docs/git-worktree">Git worktree</a>, you can use the <code>--commit</code> or <code>--push</code> options
 to automatically update the GitHub pages branch.</p>
@@ -108,7 +124,7 @@ Options:
 </pre></div>
 
 
-<h2>Configuration</h2>
+<h2 id="configuration">Configuration</h2>
 <p>The configuration file is <code>.yassg.toml</code> and  is read from the current working
 directory. All paths defined in the configuration file are also considered
 relative to the working directory. The configuration file format is <a href="https://github.com/toml-lang/toml">TOML</a>.</p>
@@ -137,7 +153,7 @@ in the configuration. Check out the <a href="../theming">Theming</a> documentati
 more information on themes.</p>
 <p><strong>markdown-extensions</strong></p>
 <p>A list of markdown extensions to use for the Python <code>markdown</code> library.
-Defaults to <code>["extra", "codehilite"]</code>.</p>
+Defaults to <code>["toc", "extra", "codehilite"]</code>.</p>
 <p><strong>site-name</strong></p>
 <p>Themes commonly use this configuration parameter for the site name.</p>
 <p><strong>footer-notice</strong></p>
@@ -146,7 +162,7 @@ Defaults to <code>["extra", "codehilite"]</code>.</p>
 <p>Themes commonly use this configuration parameter for Disqus support.</p>
 <p><strong>google-analytics</strong></p>
 <p>Themes commonly use this configuration parameter for Google Analytics support.</p>
-<h2>Directory layout</h2>
+<h2 id="directory-layout">Directory layout</h2>
 <p>Yassg will create a page for every markdown file in the <strong>docs-dir</strong>. If
 the <strong>recursive</strong> option is enabled, sub-directories will be checked as well.
 A sub-directory that contains markdown files may also have a markdown source
@@ -167,7 +183,7 @@ navigation rendering.</p>
 </pre></div>
 
 
-<h2>Page configuration</h2>
+<h2 id="page-configuration">Page configuration</h2>
 <p>Pages can be configured with a special TOML section at the beginning of the
 file enclosed by triple pluses (<code>+++</code>).</p>
 <p>Example:</p>
@@ -196,29 +212,31 @@ sorted alphabetically. The default value is <code>0</code>.</p>
 <p>Read the content of this page from a different file. This is useful if you
 wnat to include the <code>README.md</code> of your repository in your site without
 duplicating its content.</p>
-    </div>
+        </div>
 
-    <!-- disqus support -->
-    
-      <div class="ui main text container">
-        <div id="disqus_thread"></div>
-        <script type="text/javascript">
-        (function() {
-            // Don't ever inject Disqus on localhost--it creates unwanted
-            // discussions from 'localhost:1313' on your Disqus account...
-            //if (window.location.hostname == "localhost")
-            //    return;
+        <!-- disqus support -->
+        
+          <div class="ui text container">
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            (function() {
+                // Don't ever inject Disqus on localhost--it creates unwanted
+                // discussions from 'localhost:1313' on your Disqus account...
+                //if (window.location.hostname == "localhost")
+                //    return;
 
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            var disqus_shortname = 'niklasrosenstein-com';
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-        </script>
-        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-        <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                var disqus_shortname = 'niklasrosenstein-com';
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+            <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+          </div>
+        
       </div>
-    
+    </div>
 
     <!-- footer -->
     <div class="ui inverted vertical footer segment">

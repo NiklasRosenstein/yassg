@@ -6,11 +6,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.js"></script>
     <link rel="stylesheet" href="../static/style.css">
     <style>
-    .main.container {
-      margin-top: 7em;
-    }
-    .wireframe {
-      margin-top: 2em;
+    h1, h2, h3, h4, h5, h6 {
+      padding-top: 60px;
+      margin-top: -50px;
     }
     .ui.footer.segment {
       margin: 5em 0em 0em;
@@ -20,6 +18,9 @@
       padding: 0.5em 1em;
       background-color: #eee;
       overflow: auto;
+    }
+    #disqus_thread {
+      margin-top: 7em;
     }
     </style>
 
@@ -75,27 +76,49 @@
       </div>
     </div>
 
-    <!-- content -->
-    <div class="ui main text container">
-      <h2>Theme Structure</h2>
+    <div class="ui grid container main">
+      <div class="four wide column">
+        <h1>Table of Contents</h1>
+        <div class="toc">
+<ul>
+<li><a href="#theme-structure">Theme Structure</a><ul>
+<li><a href="#before_renderrenderer">before_render(renderer)</a></li>
+</ul>
+</li>
+<li><a href="#available-built-ins">Available Built-ins</a><ul>
+<li><a href="#config">config</a></li>
+<li><a href="#renderer">renderer</a></li>
+<li><a href="#page">page</a></li>
+<li><a href="#markdown">Markdown()</a></li>
+<li><a href="#url_forpathunionstrpage">url_for(path:Union[str,Page])</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+      </div>
+      <div class="twelve wide column">
+        <!-- content -->
+        <div class="ui text container">
+          <h2 id="theme-structure">Theme Structure</h2>
 <p>A theme must provide a <code>page.html</code> template that will then be rendered using
 Jinja2. It may also contain other template files that it can include or extend,
 but only the <code>page.html</code> will be rendered by default.</p>
 <p>All files in a theme's <code>static/</code> directory will be copied as-is to the output
 build directory.</p>
-<h3><code>before_render(renderer)</code></h3>
+<h3 id="before_renderrenderer"><code>before_render(renderer)</code></h3>
 <p>A theme directory may  contain a Node.py source file with the <code>.yassg-theme.py</code>
 suffix. This file will be be loaded and the function <code>before_render()</code> will be
 called before the theme is rendered. This function can be used to
 pre-process the configuration, pages or Jinja2 environment.</p>
-<h2>Available Built-ins</h2>
-<h3><code>config</code></h3>
+<h2 id="available-built-ins">Available Built-ins</h2>
+<h3 id="config"><code>config</code></h3>
 <p>The <code>.yassg.toml</code> configuration file as dictionary.</p>
-<h3><code>renderer</code></h3>
+<h3 id="renderer"><code>renderer</code></h3>
 <p>The <code>Renderer</code> object that is currently executing the rendering process.</p>
-<h3><code>page</code></h3>
+<h3 id="page"><code>page</code></h3>
 <p>The <code>Page</code> that is currently being rendered.</p>
-<h3><code>Markdown()</code></h3>
+<h3 id="markdown"><code>Markdown()</code></h3>
 <p>A factory returning a <code>markdown.Markdown</code> object that can be used to convert
 the contents of a page. At the beginning of a <code>page.html</code> template, you
 might want to use the following two lines:</p>
@@ -104,7 +127,7 @@ might want to use the following two lines:</p>
 </pre></div>
 
 
-<h3><code>url_for(path:Union[str,Page])</code></h3>
+<h3 id="url_forpathunionstrpage"><code>url_for(path:Union[str,Page])</code></h3>
 <p>Returns a URL relative to the current page pointing to the specified <em>path</em>,
 which is either a string (thus, a specific file in the site's final directory)
 or a <code>Page</code> object referencing another page.</p>
@@ -117,29 +140,31 @@ or a <code>Page</code> object referencing another page.</p>
   {% endif %}
 <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 </pre></div>
-    </div>
+        </div>
 
-    <!-- disqus support -->
-    
-      <div class="ui main text container">
-        <div id="disqus_thread"></div>
-        <script type="text/javascript">
-        (function() {
-            // Don't ever inject Disqus on localhost--it creates unwanted
-            // discussions from 'localhost:1313' on your Disqus account...
-            //if (window.location.hostname == "localhost")
-            //    return;
+        <!-- disqus support -->
+        
+          <div class="ui text container">
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            (function() {
+                // Don't ever inject Disqus on localhost--it creates unwanted
+                // discussions from 'localhost:1313' on your Disqus account...
+                //if (window.location.hostname == "localhost")
+                //    return;
 
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            var disqus_shortname = 'niklasrosenstein-com';
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-        </script>
-        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-        <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                var disqus_shortname = 'niklasrosenstein-com';
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+            <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+          </div>
+        
       </div>
-    
+    </div>
 
     <!-- footer -->
     <div class="ui inverted vertical footer segment">

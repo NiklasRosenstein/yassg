@@ -6,11 +6,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.js"></script>
     <link rel="stylesheet" href="static/style.css">
     <style>
-    .main.container {
-      margin-top: 7em;
-    }
-    .wireframe {
-      margin-top: 2em;
+    h1, h2, h3, h4, h5, h6 {
+      padding-top: 60px;
+      margin-top: -50px;
     }
     .ui.footer.segment {
       margin: 5em 0em 0em;
@@ -20,6 +18,9 @@
       padding: 0.5em 1em;
       background-color: #eee;
       overflow: auto;
+    }
+    #disqus_thread {
+      margin-top: 7em;
     }
     </style>
 
@@ -75,9 +76,20 @@
       </div>
     </div>
 
-    <!-- content -->
-    <div class="ui main text container">
-      <h1>Yet another static site generator</h1>
+    <div class="ui grid container main">
+      <div class="four wide column">
+        <h1>Table of Contents</h1>
+        <div class="toc">
+<ul>
+<li><a href="#yet-another-static-site-generator">Yet another static site generator</a></li>
+</ul>
+</div>
+
+      </div>
+      <div class="twelve wide column">
+        <!-- content -->
+        <div class="ui text container">
+          <h1 id="yet-another-static-site-generator">Yet another static site generator</h1>
 <p><a href="https://opensource.org/licenses/MIT"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" /></a>
 <a href="http://niklasrosenstein.github.io/yassg/"><img alt="Documentation" src="https://img.shields.io/badge/docs-latest-green.svg" /></a></p>
 <p>Yassg is yet another static site generator based on <a href="https://nodepy.org/">Node.py</a> (with Python 3),
@@ -87,29 +99,31 @@ Jinja2 and Markdown.</p>
 <li>Generates relative URLs to other pages</li>
 <li>Powerful theming with plugins and Jinja2 templates</li>
 </ul>
-    </div>
+        </div>
 
-    <!-- disqus support -->
-    
-      <div class="ui main text container">
-        <div id="disqus_thread"></div>
-        <script type="text/javascript">
-        (function() {
-            // Don't ever inject Disqus on localhost--it creates unwanted
-            // discussions from 'localhost:1313' on your Disqus account...
-            //if (window.location.hostname == "localhost")
-            //    return;
+        <!-- disqus support -->
+        
+          <div class="ui text container">
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            (function() {
+                // Don't ever inject Disqus on localhost--it creates unwanted
+                // discussions from 'localhost:1313' on your Disqus account...
+                //if (window.location.hostname == "localhost")
+                //    return;
 
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            var disqus_shortname = 'niklasrosenstein-com';
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-        </script>
-        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-        <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                var disqus_shortname = 'niklasrosenstein-com';
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+            <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+          </div>
+        
       </div>
-    
+    </div>
 
     <!-- footer -->
     <div class="ui inverted vertical footer segment">
