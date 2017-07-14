@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Yassg Documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.js"></script>
+    <link rel="stylesheet" href="../static/style.css">
+    <style>
+    .main.container {
+      margin-top: 7em;
+    }
+    .wireframe {
+      margin-top: 2em;
+    }
+    .ui.footer.segment {
+      margin: 5em 0em 0em;
+      padding: 5em 0em;
+    }
+    pre {
+      padding: 0.5em 1em;
+      background-color: #eee;
+      overflow: auto;
+    }
+    </style>
+
+    <!-- Google Analytics -->
+    
+      <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-102556838-1', 'auto');
+      ga('send', 'pageview');
+      </script>
+    
+  </head>
+  <body>
+
+    
+
+    <!-- header -->
+    <div class="ui fixed inverted menu">
+      <div class="ui container">
+        <span class="header item">
+          <!--<img class="logo" src="assets/images/logo.png">-->
+          Yassg Documentation
+        </span>
+        
+          
+      
+      
+      
+        <a href=".." class="item ">Home</a>
+      
+    
+        
+          
+      
+      
+      
+        <a href="." class="item active">Usage</a>
+      
+    
+        
+          
+      
+      
+      
+        <a href="../theming" class="item ">Theming</a>
+      
+    
+        
+      </div>
+    </div>
+
+    <!-- content -->
+    <div class="ui main text container">
+      <h2>Installation</h2>
+<p>Yassg is built is built with <a href="https://nodepy.org/">Node.py</a> and Python 3. To install Node.py,
+install it just like any other Python module via Pip.</p>
+<div class="codehilite"><pre><span></span>$ pip3 install node.py
+</pre></div>
+
+
+<p>Then you can install Yassg with the Node.py's package manager <strong>nppm</strong>.</p>
+<div class="codehilite"><pre><span></span>$ nppm3 install -g git+https://github.com/NiklasRosenstein/yassg.git
+</pre></div>
+
+
+<h2>Command-line Interface</h2>
+<p>Invoking Yassg will builds the full documentation. When you set up the build
+directory as a <a href="https://git-scm.com/docs/git-worktree">Git worktree</a>, you can use the <code>--commit</code> or <code>--push</code> options
+to automatically update the GitHub pages branch.</p>
+<div class="codehilite"><pre><span></span>$ yassg --help
+Usage: yassg <span class="o">[</span>OPTIONS<span class="o">]</span>
+
+Yet another static site generator.
+
+Options:
+-C, --config TEXT  Configuration file. Defaults to .yassg.toml
+--commit           Create a new commit after the build. Use only when the
+                   build directory is set-up as a git worktree.
+--push             Commit and push after the build. Use only when the build
+                   directory is set-up as a git worktree.
+--help             Show this message and exit.
+</pre></div>
+
+
+<h2>Configuration</h2>
+<p>The configuration file is <code>.yassg.toml</code> and  is read from the current working
+directory. All paths defined in the configuration file are also considered
+relative to the working directory. The configuration file format is <a href="https://github.com/toml-lang/toml">TOML</a>.</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span>site-name = &quot;My site&quot;
+footer-notice = &quot;Copyright &amp;copy; 2017 John Cena&quot;
+trailing-slashes = true
+disqus-shortname = &quot;mysite-com&quot;
+google-analytics = &quot;UA-324242343-1&quot;
+</pre></div>
+
+
+<p><strong>docs-dir</strong></p>
+<p>The directory where the markdown source files reside. The default value for
+this option is <code>"docs/"</code>.</p>
+<p><strong>build-dir</strong></p>
+<p>The build output directory. The default value is <code>".build/docs"</code>.</p>
+<p><strong>recursive</strong></p>
+<p>Search for pages in the <strong>docs-dir</strong> recursively. The default is <code>true</code>.</p>
+<p><strong>trailing-slashes</strong></p>
+<p>Put every output HTML file into its own directory, causing the site to be
+served with trailing slashes rather than <code>.html</code> filenames in the URL.</p>
+<p><strong>theme</strong></p>
+<p>Path to a theme directory. The default theme is used if no path is specified
+in the configuration. Check out the <a href="../theming">Theming</a> documentation for
+more information on themes.</p>
+<p><strong>markdown-extensions</strong></p>
+<p>A list of markdown extensions to use for the Python <code>markdown</code> library.
+Defaults to <code>["extra", "codehilite"]</code>.</p>
+<p><strong>site-name</strong></p>
+<p>Themes commonly use this configuration parameter for the site name.</p>
+<p><strong>footer-notice</strong></p>
+<p>Themes commonly use this configuration parameter in the footer.</p>
+<p><strong>disqus-shortname</strong></p>
+<p>Themes commonly use this configuration parameter for Disqus support.</p>
+<p><strong>google-analytics</strong></p>
+<p>Themes commonly use this configuration parameter for Google Analytics support.</p>
+<h2>Directory layout</h2>
+<p>Yassg will create a page for every markdown file in the <strong>docs-dir</strong>. If
+the <strong>recursive</strong> option is enabled, sub-directories will be checked as well.
+A sub-directory that contains markdown files may also have a markdown source
+file with the same name.</p>
+<p>Alternatively, you can add a <code>.toml</code> file with the same name to specify page
+options (most importantly, the <strong>ordering-priority</strong> and <strong>title</strong>) for the
+navigation rendering.</p>
+<div class="codehilite"><pre><span></span>docs/
+  index.md
+  cli.md
+  cli/
+    bin.md
+    package.md
+  examples.toml
+  examples/
+    example1.md
+    example2.md
+</pre></div>
+
+
+<h2>Page configuration</h2>
+<p>Pages can be configured with a special TOML section at the beginning of the
+file enclosed by triple pluses (<code>+++</code>).</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span>+++
+title = &quot;Home&quot;
+ordering-priority = 10
+render-title = false
+content-from = &quot;../README.md&quot;
++++
+</pre></div>
+
+
+<p><strong>title</strong></p>
+<p>The page's title. Themes can read the page's display name using</p>
+<div class="codehilite"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">detail</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">page</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+
+
+<p><strong>ordering-priority</strong></p>
+<p>A number that specifies the ordering priority. Higher priority causes the
+page to appear earlier in the list. Pages with the same priority will be
+sorted alphabetically. The default value is <code>0</code>.</p>
+<p><strong>render-title</strong></p>
+<p>Render the title of the page. The default value is <code>true</code>.</p>
+<p><strong>content-from</strong></p>
+<p>Read the content of this page from a different file. This is useful if you
+wnat to include the <code>README.md</code> of your repository in your site without
+duplicating its content.</p>
+    </div>
+
+    <!-- disqus support -->
+    
+      <div class="ui main text container">
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        (function() {
+            // Don't ever inject Disqus on localhost--it creates unwanted
+            // discussions from 'localhost:1313' on your Disqus account...
+            //if (window.location.hostname == "localhost")
+            //    return;
+
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            var disqus_shortname = 'niklasrosenstein-com';
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </div>
+    
+
+    <!-- footer -->
+    <div class="ui inverted vertical footer segment">
+      <div class="ui center aligned container">
+          
+            <p>Copyright &copy 2017 Niklas Rosenstein</p>
+          
+          <p>
+             &mdash; 
+            Generated with <a href="https://github.com/NiklasRosenstein/yassg">Yassg</a>
+          </p>
+      </div>
+    </div>
+  </body>
+</html>
