@@ -3,3 +3,4 @@ trailing-slashes = true
 footer-notice = "Copyright &copy 2017 Niklas Rosenstein"
 disqus-shortname = "niklasrosenstein-com"
 google-analytics = "UA-102556838-1"
+github-repository = "NiklasRosenstein/yassg"

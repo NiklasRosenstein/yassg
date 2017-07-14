@@ -96,6 +96,11 @@ __google-analytics__
 
 Themes commonly use this configuration parameter for Google Analytics support.
 
+__github-repository__
+
+Themes commonly use this configuration parameter to include a link to a GitHub
+repository.
+
 ## Directory layout
 
 Yassg will create a page for every markdown file in the **docs-dir**. If
