@@ -31,6 +31,14 @@ import shutil
 import re
 
 
+def ensure_dir(directory):
+  try:
+    os.makedirs(directory)
+  except OSError as e:
+    if e.errno != errno.EEXIST:
+      raise
+
+
 def load_page_details(data, filename=None):
   """
   # Raises
@@ -133,6 +141,9 @@ class Page(object):
     self.details = {} if details is None else details
     self.children = []
 
+  def __repr__(self):
+    return '<Page {!r}>'.format(self.path)
+
   def __str__(self):
     parts = ['* {}'.format(self.detail('title', self.name))]
     for child in self.children:
@@ -160,11 +171,6 @@ class Page(object):
       self.parent.children.remove(self)
       self.parent = None
 
-  def relpath(self, relative_to_page):
-    if not isinstance(relative_to_page, Page):
-      raise TypeError('expected Page object')
-    return posixpath.relpath(self.path, posixpath.dirname(relative_to_page.path))
-
   def sort(self):
     def key(p):
       return (-p.detail('ordering-priority', 0), p.detail('title', p.name))
@@ -186,8 +192,8 @@ class Page(object):
       self = self.parent
     return self
 
-  def render(self, jinja_env):
-    template = jinja_env.get_template('page.html')
+  def render(self, renderer):
+    template = renderer.jinja_env.get_template('page.html')
     return template.render(page=self)
 
 
@@ -202,67 +208,96 @@ class RootPage(Page):
     return '\n'.join(map(str, self.children))
 
 
-def new_markdown_factory(*args, **kwargs):
-  return lambda: markdown.Markdown(*args, **kwargs)
-
-
-def render_to_directory(pages, directory, config, theme_dir,
-                        markdown_factory, trailing_slashes=True):
+class Renderer(object):
   """
-  Renders *pages* to the output *directory*. If *trailing_slashes* is #True,
-  every rendered page will be wrapped in a directory. If no *theme_dir* is
-  specified, the standard theme of Yassg is used.
+  This class implements rendering all pages in a site.
+
+  # Parameters
+  pages (RootPage, or list of Page)
   """
 
-  if isinstance(pages, RootPage):
-    pages = pages.children
-  if config is None:
-    config = {}
-  if theme_dir is None:
-    theme_dir = os.path.join(__directory__, 'theme')
+  def __init__(self, pages, config):
+    if isinstance(pages, RootPage):
+      pages = pages.children
+    self.pages = pages
+    self.config = config
+    self.theme_dir = config.get('theme', os.path.join(__directory__, 'theme'))
+    self.jinja_env = jinja2.Environment(
+      loader=jinja2.FileSystemLoader(self.theme_dir)
+    )
 
-  def ensure_dir(directory):
-    try:
-      os.makedirs(directory)
-    except OSError as e:
-      if e.errno != errno.EEXIST:
-        raise
+    markdown_extensions = config.get('markdown-extensions', ['extra', 'codehilite'])
+    self.jinja_env.globals.update({
+      'renderer': self,
+      'config': config,
+      'Markdown': lambda: markdown.Markdown(markdown_extensions),
+      'url_for': self.url_for,
+    })
 
-  def abs(page, path):
-    return posixpath.relpath(path, os.path.dirname(page.path))
+    self.trailing_slashes = config.get('trailing-slashes', True)
+    self.current_page = None
 
-  jinja_env = jinja2.Environment(
-    loader=jinja2.FileSystemLoader(theme_dir)
-  )
-  jinja_env.globals['config'] = config
-  jinja_env.globals['Markdown'] = markdown_factory
-  jinja_env.globals['abs'] = abs
+  def relpath(self, path):
+    """
+    Returns a relative path from the current_page.
+    """
 
-  for name in os.listdir(theme_dir):
-    if name.endswith('.yassg-theme.py'):
-      extension = require('./' + name, current_dir=theme_dir)
-      extension.before_render(pages, jinja_env, config)
+    ref = self._absolute_path(self.current_page.path)
+    if not path and not ref:
+      return ''
+    if not path:
+      return '/'.join(['..'] * (ref.count('/') + 1))
+    return posixpath.relpath(path, ref)
 
-  def render(page):
-    if trailing_slashes:
-      filename = os.path.join(directory, page.path, 'index.html')
+  def url_for(self, path_or_page):
+    """
+    Returns a relative path to the specified *page* from the current page.
+    """
+
+    if isinstance(path_or_page, Page):
+      return self.relpath(self._absolute_path(path_or_page.path))
     else:
-      filename = os.path.join(directory, page.path + '.html')
-    ensure_dir(os.path.dirname(filename))
-    if page.content:
-      print('writing', filename)
-      with open(filename, 'w') as fp:
-        fp.write(page.render(jinja_env))
-    [render(child) for child in page.children]
+      return self.relpath(path_or_page)
 
-  ensure_dir(directory)
-  [render(page) for page in pages]
+  def _absolute_path(self, path, file=False):
+    parts = path.split('/')
+    if self.trailing_slashes and parts[-1] == 'index':
+      parts.pop()
+    if not self.trailing_slashes:
+      parts[-1] += '.html'
+    elif file:
+      parts.append('index.html')
+    return '/'.join(parts)
 
-  static_dir = os.path.join(theme_dir, 'static')
-  dest_dir = os.path.join(directory, 'static')
-  if os.path.isdir(dest_dir):
-    print('removing old', dest_dir)
-    shutil.rmtree(dest_dir)
-  if os.path.isdir(static_dir):
-    print('copying files to', dest_dir)
-    shutil.copytree(static_dir, dest_dir)
+  def render(self, directory):
+    """
+    Renders all pages to *directory* and copies the theme's static files.
+    """
+
+    # Check if there's any plugin Python files in the themes dir.
+    for name in os.listdir(self.theme_dir):
+      if name.endswith('.yassg-theme.py'):
+        extension = require('./' + name, current_dir=self.theme_dir)
+        extension.before_render(self)
+
+    def recursion(page):
+      self.current_page = page
+      filename = os.path.join(directory, self._absolute_path(page.path, file=True))
+      ensure_dir(os.path.dirname(filename))
+      if page.content:
+        print('writing', filename)
+        with open(filename, 'w') as fp:
+          fp.write(page.render(self))
+      [recursion(child) for child in page.children]
+
+    ensure_dir(directory)
+    [recursion(page) for page in self.pages]
+
+    static_dir = os.path.join(self.theme_dir, 'static')
+    dest_dir = os.path.join(directory, 'static')
+    if os.path.isdir(dest_dir):
+      print('removing old', dest_dir)
+      shutil.rmtree(dest_dir)
+    if os.path.isdir(static_dir):
+      print('copying files to', dest_dir)
+      shutil.copytree(static_dir, dest_dir)

@@ -2,5 +2,5 @@
 # the #before_render() function will be called, allowing you to alter the
 # site structure or adding new pages.
 
-def before_render(pages, config, jinja_env):
+def before_render(renderer):
   pass

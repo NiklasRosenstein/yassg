@@ -6,7 +6,7 @@
     <title>{{ config['site-name'] }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.js"></script>
-    <link rel="stylesheet" href="{{ abs(page, 'static/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static/style.css') }}">
     <style>
     .main.container {
       margin-top: 7em;
@@ -21,6 +21,7 @@
     pre {
       padding: 0.5em 1em;
       background-color: #eee;
+      overflow: auto;
     }
     </style>
 
@@ -41,14 +42,15 @@
 
     {% macro render_nav(current_page) %}
       {% set name = current_page.detail('title', current_page.name) %}
+      {% set active = 'active' if current_page == page else '' %}
       {% if current_page.content and not current_page.children %}
-        <a href="{{ current_page.relpath(page) }}.html" class="item">{{ name }}</a>
+        <a href="{{ url_for(current_page) }}" class="item {{ active }}">{{ name }}</a>
       {% elif current_page.children %}
         {% if current_page.content %}
         {% endif %}
         <div class="ui simple dropdown item">
           {% if current_page.content %}
-            <a href="{{ current_page.relpath(page) }}.html" >{{ name }}</a>
+            <a href="{{ url_for(current_page) }}" class="{{ active }}">{{ name }}</a>
           {% else %}
             {{ name }}
           {% endif %}

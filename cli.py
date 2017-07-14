@@ -24,26 +24,26 @@ import os
 import yassg from './yassg.py'
 
 @click.command()
-@click.option('-C', '--config', default='.yassg.toml')
+@click.option('-C', '--config', default='.yassg.toml',
+  help='Configuration file. Defaults to .yassg.toml'
+)
 def main(config):
+  """
+  Yet another static site generator.
+  """
+
   with open(config) as fp:
     config = toml.load(fp)
 
   docs_dir = config.get('docs-dir', 'docs')
   build_dir = config.get('build-dir', '.build/docs')
   recursive = config.get('recursive', True)
-  theme = config.get('theme', os.path.join(__directory__, 'theme'))
-  trailing_slashes = config.get('trailing-slashes', False)
-  markdown_extensions = config.get('markdown-extensions', ['extra', 'codehilite'])
 
   root = yassg.RootPage(yassg.pages_from_directory(docs_dir, recursive=recursive))
   root.sort()
 
-  yassg.render_to_directory(
-    root, build_dir, config, theme,
-    trailing_slashes=trailing_slashes,
-    markdown_factory=yassg.new_markdown_factory(markdown_extensions)
-  )
+  renderer = yassg.Renderer(root, config)
+  renderer.render(build_dir)
 
 if require.main == module:
   main()

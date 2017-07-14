@@ -1,7 +1,7 @@
-# Yet another statis site generator
+# Yet another static site generator
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
+[![Documentation](https://img.shields.io/badge/docs-latest-green.svg)](http://niklasrosenstein.github.io/yassg/)
 
 Yassg is yet another static site generator that is built with [Node.py]
 on Python 3, based on Jinja2 and Markdown.
@@ -10,14 +10,21 @@ on Python 3, based on Jinja2 and Markdown.
 
 __Features__
 
-* Theming support with Jinja2
+* Powerful theming with Jinja2 and Python plugins
 * Generates relative URLs to other pages
 
 __Installation__
 
     $ pip3 install node.py
     $ nppm3 install -g git+https://github.com/NiklasRosenstein/yassg.git
-    $ yassg
+    $ yassg --help
+    Usage: yassg [OPTIONS]
+
+    Yet another static site generator.
+
+    Options:
+    -C, --config TEXT  Configuration file. Defaults to .yassg.toml
+    --help             Show this message and exit.
 
 __Configuration__: `.yassg.toml`
 
@@ -26,7 +33,7 @@ __Configuration__: `.yassg.toml`
 docs-dir = "docs"
 build-dir = ".build/docs"
 recursive = true
-trailing-slashes = false
+trailing-slashes = true
 
 # Content rendering related (defaults shown)
 theme = "path/to/theme"
