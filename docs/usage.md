@@ -78,7 +78,7 @@ more information on themes.
 __markdown-extensions__
 
 A list of markdown extensions to use for the Python `markdown` library.
-Defaults to `["extra", "codehilite"]`.
+Defaults to `["toc", "extra", "codehilite"]`.
 
 __site-name__
 

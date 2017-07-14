@@ -226,7 +226,7 @@ class Renderer(object):
       loader=jinja2.FileSystemLoader(self.theme_dir)
     )
 
-    markdown_extensions = config.get('markdown-extensions', ['extra', 'codehilite'])
+    markdown_extensions = config.get('markdown-extensions', ['toc', 'extra', 'codehilite'])
     self.jinja_env.globals.update({
       'renderer': self,
       'config': config,
