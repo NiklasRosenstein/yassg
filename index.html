@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Yassg Documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.js"></script>
+    <link rel="stylesheet" href="static/style.css">
+    <style>
+    .main.container {
+      margin-top: 7em;
+    }
+    .wireframe {
+      margin-top: 2em;
+    }
+    .ui.footer.segment {
+      margin: 5em 0em 0em;
+      padding: 5em 0em;
+    }
+    pre {
+      padding: 0.5em 1em;
+      background-color: #eee;
+      overflow: auto;
+    }
+    </style>
+
+    <!-- Google Analytics -->
+    
+      <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-102556838-1', 'auto');
+      ga('send', 'pageview');
+      </script>
+    
+  </head>
+  <body>
+
+    
+
+    <!-- header -->
+    <div class="ui fixed inverted menu">
+      <div class="ui container">
+        <span class="header item">
+          <!--<img class="logo" src="assets/images/logo.png">-->
+          Yassg Documentation
+        </span>
+        
+          
+      
+      
+      
+        <a href="" class="item active">Home</a>
+      
+    
+        
+          
+      
+      
+      
+        <a href="theming" class="item ">Theming</a>
+      
+    
+        
+      </div>
+    </div>
+
+    <!-- content -->
+    <div class="ui main text container">
+      <h1>Yet another static site generator</h1>
+<p><a href="https://opensource.org/licenses/MIT"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" /></a>
+<a href="http://niklasrosenstein.github.io/yassg/"><img alt="Documentation" src="https://img.shields.io/badge/docs-latest-green.svg" /></a></p>
+<p>Yassg is yet another static site generator that is built with <a href="https://nodepy.org/">Node.py</a>
+on Python 3, based on Jinja2 and Markdown.</p>
+<p><strong>Features</strong></p>
+<ul>
+<li>Powerful theming with Jinja2 and Python plugins</li>
+<li>Generates relative URLs to other pages</li>
+</ul>
+<p><strong>Installation</strong></p>
+<div class="codehilite"><pre><span></span>$ pip3 install node.py
+$ nppm3 install -g git+https://github.com/NiklasRosenstein/yassg.git
+$ yassg --help
+Usage: yassg <span class="o">[</span>OPTIONS<span class="o">]</span>
+
+Yet another static site generator.
+
+Options:
+-C, --config TEXT  Configuration file. Defaults to .yassg.toml
+--help             Show this message and exit.
+</pre></div>
+
+
+<p><strong>Configuration</strong>: <code>.yassg.toml</code></p>
+<div class="codehilite"><pre><span></span><span class="c1"># Build related (defaults shown)</span>
+<span class="n">docs</span><span class="o">-</span><span class="nb">dir</span> <span class="o">=</span> <span class="s2">&quot;docs&quot;</span>
+<span class="n">build</span><span class="o">-</span><span class="nb">dir</span> <span class="o">=</span> <span class="s2">&quot;.build/docs&quot;</span>
+<span class="n">recursive</span> <span class="o">=</span> <span class="n">true</span>
+<span class="n">trailing</span><span class="o">-</span><span class="n">slashes</span> <span class="o">=</span> <span class="n">true</span>
+
+<span class="c1"># Content rendering related (defaults shown)</span>
+<span class="n">theme</span> <span class="o">=</span> <span class="s2">&quot;path/to/theme&quot;</span>
+<span class="n">markdown</span><span class="o">-</span><span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;extra&quot;</span><span class="p">,</span> <span class="s2">&quot;codehilite&quot;</span><span class="p">]</span>
+<span class="n">site</span><span class="o">-</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;This is my page title&quot;</span>
+<span class="n">footer</span><span class="o">-</span><span class="n">notice</span> <span class="o">=</span> <span class="s2">&quot;Copyright &amp;copy; 2017 My Name&quot;</span>
+
+<span class="c1"># Theme features</span>
+<span class="n">disqus</span><span class="o">-</span><span class="n">shortname</span> <span class="o">=</span> <span class="s2">&quot;...&quot;</span>
+<span class="n">google</span><span class="o">-</span><span class="n">analytics</span> <span class="o">=</span> <span class="s2">&quot;...&quot;</span>
+</pre></div>
+
+
+<p><strong>Directory Layout</strong></p>
+<div class="codehilite"><pre><span></span>docs/
+  index.md
+  cli.md
+  cli/
+    bin.md
+    package.md
+</pre></div>
+
+
+<p><strong>Page-level configuration</strong></p>
+<div class="codehilite"><pre><span></span>+++
+title = &quot;Home&quot;
+ordering-priority = 10
+render-title = false
+content-from = &quot;../README.md&quot;
++++
+</pre></div>
+
+
+<p><strong>Deploying to GitHub Pages</strong></p>
+<div class="codehilite"><pre><span></span>$ git checkout --orphan gh-pages
+$ git reset
+$ git commit --allow-empty -m <span class="s2">&quot;Initial commit&quot;</span>
+$ git checkout --force master
+$ git worktree add .build/docs gh-pages
+$ yassg --commit --push
+</pre></div>
+    </div>
+
+    <!-- disqus support -->
+    
+      <div class="ui main text container">
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        (function() {
+            // Don't ever inject Disqus on localhost--it creates unwanted
+            // discussions from 'localhost:1313' on your Disqus account...
+            //if (window.location.hostname == "localhost")
+            //    return;
+
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            var disqus_shortname = 'niklasrosenstein-com';
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </div>
+    
+
+    <!-- footer -->
+    <div class="ui inverted vertical footer segment">
+      <div class="ui center aligned container">
+          
+            <p>Copyright &copy 2017 Niklas Rosenstein</p>
+          
+          <p>
+             &mdash; 
+            Generated with <a href="https://github.com/NiklasRosenstein/yassg">Yassg</a>
+          </p>
+      </div>
+    </div>
+  </body>
+</html>
