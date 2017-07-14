@@ -243,6 +243,8 @@ class Renderer(object):
     """
 
     ref = self._absolute_path(self.current_page.path)
+    if not self.trailing_slashes:
+      ref = os.path.dirname(ref)
     if not path and not ref:
       return ''
     if not path:
