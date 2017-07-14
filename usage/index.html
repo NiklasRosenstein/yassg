@@ -82,22 +82,6 @@
     </div>
 
     <div class="ui grid container main">
-      <!-- Table of contents -->
-      <div class="four wide column">
-        
-          <h1>Table of Contents</h1>
-          <div class="toc">
-<ul>
-<li><a href="#installation">Installation</a></li>
-<li><a href="#command-line-interface">Command-line Interface</a></li>
-<li><a href="#configuration">Configuration</a></li>
-<li><a href="#directory-layout">Directory layout</a></li>
-<li><a href="#page-configuration">Page configuration</a></li>
-</ul>
-</div>
-
-        
-      </div>
       <div class="twelve wide column">
         <!-- content -->
         <div class="ui text container">
@@ -194,7 +178,7 @@ navigation rendering.</p>
 </pre></div>
 
 
-<h2 id="page-configuration">Page configuration</h2>
+<h2 id="page-details">Page details</h2>
 <p>Pages can be configured with a special TOML section at the beginning of the
 file enclosed by triple pluses (<code>+++</code>).</p>
 <p>Example:</p>
@@ -219,6 +203,9 @@ page to appear earlier in the list. Pages with the same priority will be
 sorted alphabetically. The default value is <code>0</code>.</p>
 <p><strong>render-title</strong></p>
 <p>Render the title of the page. The default value is <code>true</code>.</p>
+<p><strong>render-toc</strong></p>
+<p>Many themes use this page detail to render or skip the table of contents
+section in the layout.</p>
 <p><strong>content-from</strong></p>
 <p>Read the content of this page from a different file. This is useful if you
 wnat to include the <code>README.md</code> of your repository in your site without
@@ -226,6 +213,22 @@ duplicating its content.</p>
         </div>
 
         <!-- disqus support -->
+        
+      </div>
+      <!-- Table of contents -->
+      <div class="four wide column">
+        
+          <h1>Table of Contents</h1>
+          <div class="toc">
+<ul>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#command-line-interface">Command-line Interface</a></li>
+<li><a href="#configuration">Configuration</a></li>
+<li><a href="#directory-layout">Directory layout</a></li>
+<li><a href="#page-details">Page details</a></li>
+</ul>
+</div>
+
         
       </div>
     </div>
