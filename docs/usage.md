@@ -123,7 +123,7 @@ navigation rendering.
         example1.md
         example2.md
 
-## Page configuration
+## Page details
 
 Pages can be configured with a special TOML section at the beginning of the
 file enclosed by triple pluses (`+++`).
@@ -154,6 +154,11 @@ sorted alphabetically. The default value is `0`.
 __render-title__
 
 Render the title of the page. The default value is `true`.
+
+__render-toc__
+
+Many themes use this page detail to render or skip the table of contents
+section in the layout.
 
 __content-from__
 
