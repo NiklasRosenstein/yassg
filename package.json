@@ -1,0 +1,17 @@
+{
+  "name": "@NiklasRosenstein/yassg",
+  "version": "0.0.1",
+  "main": "yassg.py",
+  "bin": {
+    "yassg": "./cli.py"
+  },
+  "description": "Yet another static site generator.",
+  "python-dependencies": {
+    "Jinja2": ">=2.9.6",
+    "Markdown": ">=2.6.8",
+    "toml": ">=0.9.2"
+  },
+  "extensions": [
+    "!require-import-syntax"
+  ]
+}

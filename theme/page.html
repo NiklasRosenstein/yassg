@@ -1,0 +1,78 @@
+{%- set md = Markdown(['toc']) -%}
+{%- set content = md.convert(page.content) -%}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ config['site-name'] }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.js"></script>
+    <style>
+    .main.container {
+      margin-top: 7em;
+    }
+    .wireframe {
+      margin-top: 2em;
+    }
+    .ui.footer.segment {
+      margin: 5em 0em 0em;
+      padding: 5em 0em;
+    }
+    </style>
+  </head>
+  <body>
+
+    {% macro render_nav(current_page) %}
+      {% set name = current_page.detail('title', current_page.name) %}
+      {% if current_page.content and not current_page.children %}
+        <a href="{{ current_page.relpath(page) }}.html" class="item">{{ name }}</a>
+      {% elif current_page.children %}
+        {% if current_page.content %}
+        {% endif %}
+        <div class="ui simple dropdown item">
+          {% if current_page.content %}
+            <a href="{{ current_page.relpath(page) }}.html" >{{ name }}</a>
+          {% else %}
+            {{ name }}
+          {% endif %}
+          <i class="dropdown icon"></i>
+          <div class="menu">
+            {% for child in current_page.children %}
+              {{ render_nav(child) }}
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    {% endmacro %}
+
+    <!-- header -->
+    <div class="ui fixed inverted menu">
+      <div class="ui container">
+        <span class="header item">
+          <!--<img class="logo" src="assets/images/logo.png">-->
+          {{ config['site-name'] }}
+        </span>
+        {% for child in page.root.children %}
+          {{ render_nav(child) }}
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- content -->
+    <div class="ui main text container">
+      {{ content|safe }}
+    </div>
+
+    <!-- footer -->
+    <div class="ui inverted vertical footer segment">
+      <div class="ui center aligned container">
+          {% if config['footer-notice'] %}
+            <p>{{ config['footer-notice']|safe }}</p>
+          {% endif %}
+          <p>
+            {% if config['footer-notice'] %} &mdash; {% endif %}
+            Generated with <a href="https://github.com/NiklasRosenstein/yassg">Yassg</a>
+          </p>
+      </div>
+    </div>
+  </body>
+</html>
