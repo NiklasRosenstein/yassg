@@ -84,12 +84,6 @@
     </div>
 
     <div class="ui grid container main">
-
-
-      <div class="four wide column">
-        <h1>Table of Contents</h1>
-        {{ md.toc|safe }}
-      </div>
       <div class="twelve wide column">
         <!-- content -->
         <div class="ui text container">
@@ -116,6 +110,13 @@
             <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
             <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
           </div>
+        {% endif %}
+      </div>
+      <!-- Table of contents -->
+      <div class="four wide column">
+        {% if page.detail('render-toc', True) %}
+          <h1>Table of Contents</h1>
+          {{ md.toc|safe }}
         {% endif %}
       </div>
     </div>
