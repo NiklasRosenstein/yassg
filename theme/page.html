@@ -1,4 +1,4 @@
-{%- set md = Markdown(['toc']) -%}
+{%- set md = Markdown() -%}
 {%- set content = md.convert(page.content) -%}
 <!DOCTYPE html>
 <html>
@@ -6,6 +6,7 @@
     <title>{{ config['site-name'] }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.js"></script>
+    <link rel="stylesheet" href="{{ abs(page, 'static/style.css') }}">
     <style>
     .main.container {
       margin-top: 7em;
@@ -16,6 +17,10 @@
     .ui.footer.segment {
       margin: 5em 0em 0em;
       padding: 5em 0em;
+    }
+    pre {
+      padding: 0.5em 1em;
+      background-color: #eee;
     }
     </style>
   </head>

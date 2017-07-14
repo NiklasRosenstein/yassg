@@ -34,13 +34,15 @@ def main(config):
   recursive = config.get('recursive', True)
   theme = config.get('theme', os.path.join(__directory__, 'theme'))
   trailing_slashes = config.get('trailing-slashes', False)
+  markdown_extensions = config.get('markdown-extensions', ['extra', 'codehilite'])
 
   root = yassg.RootPage(yassg.pages_from_directory(docs_dir, recursive=recursive))
   root.sort()
 
   yassg.render_to_directory(
     root, build_dir, config, theme,
-    trailing_slashes=trailing_slashes
+    trailing_slashes=trailing_slashes,
+    markdown_factory=yassg.new_markdown_factory(markdown_extensions)
   )
 
 if require.main == module:

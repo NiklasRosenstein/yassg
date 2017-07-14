@@ -27,6 +27,7 @@ import toml
 import markdown
 import os
 import posixpath
+import shutil
 import re
 
 
@@ -201,8 +202,12 @@ class RootPage(Page):
     return '\n'.join(map(str, self.children))
 
 
-def render_to_directory(pages, directory, config=None, theme_dir=None,
-    trailing_slashes=True):
+def new_markdown_factory(*args, **kwargs):
+  return lambda: markdown.Markdown(*args, **kwargs)
+
+
+def render_to_directory(pages, directory, config, theme_dir,
+                        markdown_factory, trailing_slashes=True):
   """
   Renders *pages* to the output *directory*. If *trailing_slashes* is #True,
   every rendered page will be wrapped in a directory. If no *theme_dir* is
@@ -223,11 +228,20 @@ def render_to_directory(pages, directory, config=None, theme_dir=None,
       if e.errno != errno.EEXIST:
         raise
 
+  def abs(page, path):
+    return posixpath.relpath(path, os.path.dirname(page.path))
+
   jinja_env = jinja2.Environment(
     loader=jinja2.FileSystemLoader(theme_dir)
   )
   jinja_env.globals['config'] = config
-  jinja_env.globals['Markdown'] = markdown.Markdown
+  jinja_env.globals['Markdown'] = markdown_factory
+  jinja_env.globals['abs'] = abs
+
+  for name in os.listdir(theme_dir):
+    if name.endswith('.yassg-theme.py'):
+      extension = require('./' + name, current_dir=theme_dir)
+      extension.before_render(pages, jinja_env, config)
 
   def render(page):
     if trailing_slashes:
@@ -243,3 +257,12 @@ def render_to_directory(pages, directory, config=None, theme_dir=None,
 
   ensure_dir(directory)
   [render(page) for page in pages]
+
+  static_dir = os.path.join(theme_dir, 'static')
+  dest_dir = os.path.join(directory, 'static')
+  if os.path.isdir(dest_dir):
+    print('removing old', dest_dir)
+    shutil.rmtree(dest_dir)
+  if os.path.isdir(static_dir):
+    print('copying files to', dest_dir)
+    shutil.copytree(static_dir, dest_dir)
