@@ -22,14 +22,21 @@ __Installation__
 __Configuration__: `.yassg.toml`
 
 ```python
-docs-dir = "docs"                                # default
-build-dir = ".build/docs"                        # default
-recursive = true                                 # default
-trailing-slashes = false                         # default
-markdown-extensions = ["extra", "codehilite"]    # default
-theme = "path/to/theme"                          # default theme included
+# Build related (defaults shown)
+docs-dir = "docs"
+build-dir = ".build/docs"
+recursive = true
+trailing-slashes = false
+
+# Content rendering related (defaults shown)
+theme = "path/to/theme"
+markdown-extensions = ["extra", "codehilite"]
 site-name = "This is my page title"
 footer-notice = "Copyright &copy; 2017 My Name"
+
+# Theme features
+disqus-shortname = "..."
+google-analytics = "..."
 ```
 
 __Directory Layout__
