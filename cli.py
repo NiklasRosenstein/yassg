@@ -21,13 +21,22 @@
 import click
 import toml
 import os
+import subprocess
 import yassg from './yassg.py'
 
 @click.command()
 @click.option('-C', '--config', default='.yassg.toml',
   help='Configuration file. Defaults to .yassg.toml'
 )
-def main(config):
+@click.option('--commit', is_flag=True,
+  help='Create a new commit after the build. Use only when the build '
+    'directory is set-up as a git worktree.'
+)
+@click.option('--push', is_flag=True,
+  help='Commit and push after the build. Use only when the build '
+    'directory is set-up as a git worktree.'
+)
+def main(config, commit, push):
   """
   Yet another static site generator.
   """
@@ -44,6 +53,14 @@ def main(config):
 
   renderer = yassg.Renderer(root, config)
   renderer.render(build_dir)
+
+  if commit or push:
+    print('Creating new commit in "{}" ...'.format(build_dir))
+    subprocess.call(['git', 'add', '.'], cwd=build_dir)
+    subprocess.call(['git', 'commit', '-m', 'Update'], cwd=build_dir)
+  if push:
+    print('Pushing to "{}" ...'.format(build_dir))
+    subprocess.call(['git', 'push', 'origin', 'gh-pages'], cwd=build_dir)
 
 if require.main == module:
   main()
