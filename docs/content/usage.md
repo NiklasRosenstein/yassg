@@ -39,7 +39,7 @@ to automatically update the GitHub pages branch.
 
 ## Configuration
 
-The configuration file is `.yassg.toml` and  is read from the current working
+The configuration file is `yassg.toml` and  is read from the current working
 directory. All paths defined in the configuration file are also considered
 relative to the working directory. The configuration file format is [TOML].
 
@@ -51,19 +51,6 @@ Example:
     disqus-shortname = "mysite-com"
     google-analytics = "UA-324242343-1"
 
-__docs-dir__
-
-The directory where the markdown source files reside. The default value for
-this option is `"docs/"`.
-
-__build-dir__
-
-The build output directory. The default value is `".build/docs"`.
-
-__recursive__
-
-Search for pages in the **docs-dir** recursively. The default is `true`.
-
 __trailing-slashes__
 
 Put every output HTML file into its own directory, causing the site to be
@@ -72,13 +59,21 @@ served with trailing slashes rather than `.html` filenames in the URL.
 __theme__
 
 Path to a theme directory. The default theme is used if no path is specified
-in the configuration. Check out the [Theming](../theming) documentation for
-more information on themes.
+in the configuration. Check out the [[theming]] documentation for more
+information on themes.
 
 __markdown-extensions__
 
 A list of markdown extensions to use for the Python `markdown` library.
 Defaults to `["toc", "extra", "codehilite"]`.
+
+__preprocessors__
+
+A list of preprocessors in the format `module-name:member` to run over
+markdown files. The modules are being loaded using `require()` from the
+current working directory, except if the `module-name` matches `yassg`.
+The default value is `["yassg:preprocess"]`. Check out the [[markdown]]
+documentation for information about this preprocessor.
 
 __site-name__
 
@@ -112,16 +107,13 @@ Alternatively, you can add a `.toml` file with the same name to specify page
 options (most importantly, the **ordering-priority** and **title**) for the
 navigation rendering.
 
-    docs/
-      index.md
-      cli.md
-      cli/
-        bin.md
-        package.md
-      examples.toml
-      examples/
-        example1.md
-        example2.md
+    site/
+      build/        # Default build output directory
+      content/      # Markdown files
+      shortcodes/   # HTML shortcodes
+      shortcodes.py # Python shortcodes
+      theme/        # Template override directory
+      yassg.toml
 
 ## Page details
 

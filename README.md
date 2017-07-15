@@ -12,3 +12,5 @@ __Features__
 
 * Generates relative URLs to other pages
 * Powerful theming with plugins and Jinja2 templates
+* Markdown preprocessor allowing you to easily reference other pages and
+  make use of shortcodes

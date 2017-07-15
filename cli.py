@@ -25,18 +25,16 @@ import subprocess
 import yassg from './yassg.py'
 
 @click.command()
-@click.option('-C', '--config', default='.yassg.toml',
-  help='Configuration file. Defaults to .yassg.toml'
-)
+@click.argument('build_dir', default='build')
+@click.option('-C', '--config', default='yassg.toml',
+  help='Configuration file. Defaults to "yassg.toml"')
 @click.option('--commit', is_flag=True,
   help='Create a new commit after the build. Use only when the build '
-    'directory is set-up as a git worktree.'
-)
+    'directory is set-up as a git worktree.')
 @click.option('--push', is_flag=True,
   help='Commit and push after the build. Use only when the build '
-    'directory is set-up as a git worktree.'
-)
-def main(config, commit, push):
+    'directory is set-up as a git worktree.')
+def main(build_dir, config, commit, push):
   """
   Yet another static site generator.
   """
@@ -44,11 +42,7 @@ def main(config, commit, push):
   with open(config) as fp:
     config = toml.load(fp)
 
-  docs_dir = config.get('docs-dir', 'docs')
-  build_dir = config.get('build-dir', '.build/docs')
-  recursive = config.get('recursive', True)
-
-  root = yassg.RootPage(yassg.pages_from_directory(docs_dir, recursive=recursive))
+  root = yassg.RootPage(yassg.pages_from_directory('content', recursive=True))
   root.sort()
 
   renderer = yassg.Renderer(root, config)

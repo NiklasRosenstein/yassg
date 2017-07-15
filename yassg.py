@@ -17,9 +17,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-"""
-A light-weight alternative over MkDocs.
-"""
 
 import errno
 import jinja2
@@ -37,6 +34,19 @@ def ensure_dir(directory):
   except OSError as e:
     if e.errno != errno.EEXIST:
       raise
+
+
+def copytree(src, dst, symlinks=False, ignore=None):
+  if not os.path.exists(dst):
+    os.makedirs(dst)
+  for item in os.listdir(src):
+    s = os.path.join(src, item)
+    d = os.path.join(dst, item)
+    if os.path.isdir(s):
+      copytree(s, d, symlinks, ignore)
+    else:
+      if not os.path.exists(d) or os.stat(s).st_mtime - os.stat(d).st_mtime > 1:
+        shutil.copy2(s, d)
 
 
 def load_page_details(data, filename=None):
@@ -208,6 +218,20 @@ class RootPage(Page):
     return '\n'.join(map(str, self.children))
 
 
+class JinjaAbsoluteFileLoader(jinja2.BaseLoader):
+
+  def get_source(self, environment, template):
+    with open(template) as fp:
+      content = fp.read()
+    mtime = os.path.getmtime(template)
+    def uptodate():
+      try:
+        return path.getmtime(template) == mtime
+      except OSError:
+        return False
+    return content, template, uptodate
+
+
 class Renderer(object):
   """
   This class implements rendering all pages in a site.
@@ -221,9 +245,11 @@ class Renderer(object):
       pages = pages.children
     self.pages = pages
     self.config = config
+    self.preprocessors = []
+    self.shortcodes = {}
     self.theme_dir = config.get('theme', os.path.join(__directory__, 'theme'))
     self.jinja_env = jinja2.Environment(
-      loader=jinja2.FileSystemLoader(self.theme_dir)
+      loader=jinja2.FileSystemLoader(['theme', self.theme_dir])
     )
 
     markdown_extensions = config.get('markdown-extensions', ['toc', 'extra', 'codehilite'])
@@ -236,6 +262,47 @@ class Renderer(object):
 
     self.trailing_slashes = config.get('trailing-slashes', True)
     self.current_page = None
+
+    for preproc in config.get('preprocessors', ['yassg:preprocess']):
+      module_name, member = preproc.split(':')
+      if module_name == 'yassg':
+        plugin = module.namespace
+      else:
+        plugin = require(module_name, current_dir='.')
+      self.preprocessors.append(getattr(plugin, member))
+
+    # Load all shortcodes.
+    shortcode_loader = JinjaAbsoluteFileLoader()
+    for directory in [__directory__, os.path.join(self.theme_dir), 'theme', '.']:
+      script = os.path.join(directory, 'shortcodes.py')
+      if os.path.isfile(script):
+        script = require(os.path.abspath(script))
+        for key, value in vars(script).items():
+          if callable(value):
+            self.shortcodes[key] = value
+      shortcodesdir = os.path.join(directory, 'shortcodes')
+      if os.path.isdir(shortcodesdir):
+        for name in os.listdir(shortcodesdir):
+          if not name.endswith('.html'): continue
+          filename = os.path.join(shortcodesdir, name)
+          template = shortcode_loader.load(self.jinja_env, filename)
+          self.shortcodes[name[:-5]] = template.render
+
+  def find_page(self, name):
+    path = self._absolute_path(name)
+    parts = path.split('/')
+    if not parts:
+      return None
+    pages = self.pages
+    for part in parts:
+      for page in pages:
+        if page.name == part:
+          pages = page.children
+          break
+      else:
+        page = None
+        break
+    return page
 
   def relpath(self, path):
     """
@@ -292,6 +359,10 @@ class Renderer(object):
       ensure_dir(os.path.dirname(filename))
       if page.content:
         print('writing', filename)
+        # Preprocess the page content.
+        for preproc in self.preprocessors:
+          preproc(self, page)
+
         with open(filename, 'w') as fp:
           fp.write(page.render(self))
       [recursion(child) for child in page.children]
@@ -299,11 +370,38 @@ class Renderer(object):
     ensure_dir(directory)
     [recursion(page) for page in self.pages]
 
-    static_dir = os.path.join(self.theme_dir, 'static')
     dest_dir = os.path.join(directory, 'static')
-    if os.path.isdir(dest_dir):
-      print('removing old', dest_dir)
-      shutil.rmtree(dest_dir)
-    if os.path.isdir(static_dir):
-      print('copying files to', dest_dir)
-      shutil.copytree(static_dir, dest_dir)
+    static_dirs = [os.path.join(self.theme_dir, 'static'), 'theme/static']
+    for static_dir in static_dirs:
+      if os.path.isdir(static_dir):
+        print('copying from', static_dir, 'to', dest_dir)
+        copytree(static_dir, dest_dir)
+
+
+def preprocess(renderer, page):
+  """
+  Yassg Markdown preprocessor.
+  """
+
+  def sub_ref(m):
+    if m.group().startswith('\\'):
+      return m.group()[1:]
+    text, ref = m.groups()
+    if not ref:
+      text, ref = None, text
+    page = renderer.find_page(ref)
+    if not page:
+      return m.group()
+    if not text:
+      text = page.detail('title', page.name)
+    return '<a href="{}">{}</a>'.format(renderer.url_for(page), text)
+
+  page.content = re.sub(r'\\?\[\[(.*?)\]\](?:\((.*?)\))?', sub_ref, page.content)
+
+  def sub_shortcode(m):
+    if m.group().startswith('\\'):
+      return m.group()[1:]
+    call = m.group(1)
+    return str(eval(call, renderer.shortcodes))
+
+  page.content = re.sub(r'\\?\{\{\s*(\w+\(.*?)\w*\s*\}\}', sub_shortcode, page.content, re.M)

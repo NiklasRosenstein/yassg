@@ -52,11 +52,11 @@ or a `Page` object referencing another page.
 Examples:
 
 ```html
-<link rel="stylesheet" href="{{ url_for('static/style.css') }}">
+<link rel="stylesheet" href="\{{ url_for('static/style.css') }}">
 
 <div class="nav navbar">
   {% for other_page in renderer.pages %}
-    <a class="item" href="{{ url_for(page) }}">{{ other_page.detail('title', page.name) }}</a>
+    <a class="item" href="\{{ url_for(page) }}">{{ other_page.detail('title', page.name) }}</a>
   {% endif %}
 </div>
 ```

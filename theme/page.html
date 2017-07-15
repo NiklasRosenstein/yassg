@@ -24,6 +24,10 @@
     #disqus_thread {
       margin-top: 7em;
     }
+    blockquote {
+      font-style: italic;
+      color: gray;
+    }
     </style>
 
     <!-- Google Analytics -->
@@ -87,6 +91,9 @@
       <div class="twelve wide column">
         <!-- content -->
         <div class="ui text container">
+          {% if page.detail('render-title', True) %}
+            <h1>{{ page.detail('title', page.name) }}</h1>
+          {% endif %}
           {{ content|safe }}
         </div>
 
