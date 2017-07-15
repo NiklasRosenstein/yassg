@@ -304,7 +304,7 @@ class Renderer(object):
         break
     return page
 
-  def relpath(self, path):
+  def relpath(self, path, is_page=False):
     """
     Returns a relative path from the current_page.
     """
@@ -318,7 +318,7 @@ class Renderer(object):
       res = '/'.join(['..'] * (ref.count('/') + 1))
     else:
       res = posixpath.relpath(path, ref)
-    if self.trailing_slashes and not res.endswith('/'):
+    if self.trailing_slashes and not res.endswith('/') and is_page:
       res += '/'
     return res
 
@@ -328,7 +328,7 @@ class Renderer(object):
     """
 
     if isinstance(path_or_page, Page):
-      return self.relpath(self._absolute_path(path_or_page.path))
+      return self.relpath(self._absolute_path(path_or_page.path), is_page=True)
     else:
       return self.relpath(path_or_page)
 
