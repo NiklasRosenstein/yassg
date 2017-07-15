@@ -4,7 +4,7 @@
     <title>Yassg Documentation</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.js"></script>
-    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="../static/style.css/">
     <style>
     h1, h2, h3, h4, h5, h6 {
       padding-top: 60px;
@@ -21,6 +21,10 @@
     }
     #disqus_thread {
       margin-top: 7em;
+    }
+    blockquote {
+      font-style: italic;
+      color: gray;
     }
     </style>
 
@@ -53,7 +57,7 @@
       
       
       
-        <a href=".." class="item ">Home</a>
+        <a href="../" class="item ">Home</a>
       
     
         
@@ -61,7 +65,7 @@
       
       
       
-        <a href="." class="item active">Usage</a>
+        <a href="./" class="item active">Usage</a>
       
     
         
@@ -69,7 +73,15 @@
       
       
       
-        <a href="../theming" class="item ">Theming</a>
+        <a href="../markdown/" class="item ">Markdown Features</a>
+      
+    
+        
+          
+      
+      
+      
+        <a href="../theming/" class="item ">Theming</a>
       
     
         
@@ -85,6 +97,9 @@
       <div class="twelve wide column">
         <!-- content -->
         <div class="ui text container">
+          
+            <h1>Usage</h1>
+          
           <h2 id="installation">Installation</h2>
 <p>Yassg is built is built with <a href="https://nodepy.org/">Node.py</a> and Python 3. To install Node.py,
 install it just like any other Python module via Pip.</p>
@@ -117,7 +132,7 @@ Options:
 
 
 <h2 id="configuration">Configuration</h2>
-<p>The configuration file is <code>.yassg.toml</code> and  is read from the current working
+<p>The configuration file is <code>yassg.toml</code> and  is read from the current working
 directory. All paths defined in the configuration file are also considered
 relative to the working directory. The configuration file format is <a href="https://github.com/toml-lang/toml">TOML</a>.</p>
 <p>Example:</p>
@@ -129,23 +144,22 @@ google-analytics = &quot;UA-324242343-1&quot;
 </pre></div>
 
 
-<p><strong>docs-dir</strong></p>
-<p>The directory where the markdown source files reside. The default value for
-this option is <code>"docs/"</code>.</p>
-<p><strong>build-dir</strong></p>
-<p>The build output directory. The default value is <code>".build/docs"</code>.</p>
-<p><strong>recursive</strong></p>
-<p>Search for pages in the <strong>docs-dir</strong> recursively. The default is <code>true</code>.</p>
 <p><strong>trailing-slashes</strong></p>
 <p>Put every output HTML file into its own directory, causing the site to be
 served with trailing slashes rather than <code>.html</code> filenames in the URL.</p>
 <p><strong>theme</strong></p>
 <p>Path to a theme directory. The default theme is used if no path is specified
-in the configuration. Check out the <a href="../theming">Theming</a> documentation for
-more information on themes.</p>
+in the configuration. Check out the <a href="../theming/">Theming</a> documentation for more
+information on themes.</p>
 <p><strong>markdown-extensions</strong></p>
 <p>A list of markdown extensions to use for the Python <code>markdown</code> library.
 Defaults to <code>["toc", "extra", "codehilite"]</code>.</p>
+<p><strong>preprocessors</strong></p>
+<p>A list of preprocessors in the format <code>module-name:member</code> to run over
+markdown files. The modules are being loaded using <code>require()</code> from the
+current working directory, except if the <code>module-name</code> matches <code>yassg</code>.
+The default value is <code>["yassg:preprocess"]</code>. Check out the <a href="../markdown/">Markdown Features</a>
+documentation for information about this preprocessor.</p>
 <p><strong>site-name</strong></p>
 <p>Themes commonly use this configuration parameter for the site name.</p>
 <p><strong>footer-notice</strong></p>
@@ -165,16 +179,13 @@ file with the same name.</p>
 <p>Alternatively, you can add a <code>.toml</code> file with the same name to specify page
 options (most importantly, the <strong>ordering-priority</strong> and <strong>title</strong>) for the
 navigation rendering.</p>
-<div class="codehilite"><pre><span></span>docs/
-  index.md
-  cli.md
-  cli/
-    bin.md
-    package.md
-  examples.toml
-  examples/
-    example1.md
-    example2.md
+<div class="codehilite"><pre><span></span>site/
+  build/        # Default build output directory
+  content/      # Markdown files
+  shortcodes/   # HTML shortcodes
+  shortcodes.py # Python shortcodes
+  theme/        # Template override directory
+  yassg.toml
 </pre></div>
 
 

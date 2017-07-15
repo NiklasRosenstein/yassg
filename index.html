@@ -4,7 +4,7 @@
     <title>Yassg Documentation</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.js"></script>
-    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="static/style.css/">
     <style>
     h1, h2, h3, h4, h5, h6 {
       padding-top: 60px;
@@ -21,6 +21,10 @@
     }
     #disqus_thread {
       margin-top: 7em;
+    }
+    blockquote {
+      font-style: italic;
+      color: gray;
     }
     </style>
 
@@ -61,7 +65,7 @@
       
       
       
-        <a href="usage" class="item ">Usage</a>
+        <a href="usage/" class="item ">Usage</a>
       
     
         
@@ -69,7 +73,15 @@
       
       
       
-        <a href="theming" class="item ">Theming</a>
+        <a href="markdown/" class="item ">Markdown Features</a>
+      
+    
+        
+          
+      
+      
+      
+        <a href="theming/" class="item ">Theming</a>
       
     
         
@@ -85,6 +97,7 @@
       <div class="twelve wide column">
         <!-- content -->
         <div class="ui text container">
+          
           <h1 id="yet-another-static-site-generator">Yet another static site generator</h1>
 <p><a href="https://opensource.org/licenses/MIT"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" /></a>
 <a href="http://niklasrosenstein.github.io/yassg/"><img alt="Documentation" src="https://img.shields.io/badge/docs-latest-green.svg" /></a></p>
@@ -94,6 +107,8 @@ Jinja2 and Markdown.</p>
 <ul>
 <li>Generates relative URLs to other pages</li>
 <li>Powerful theming with plugins and Jinja2 templates</li>
+<li>Markdown preprocessor allowing you to easily reference other pages and
+  make use of shortcodes</li>
 </ul>
         </div>
 

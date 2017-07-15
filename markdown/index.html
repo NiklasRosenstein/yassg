@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Yassg Documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.js"></script>
+    <link rel="stylesheet" href="../static/style.css/">
+    <style>
+    h1, h2, h3, h4, h5, h6 {
+      padding-top: 60px;
+      margin-top: -50px;
+    }
+    .ui.footer.segment {
+      margin: 5em 0em 0em;
+      padding: 5em 0em;
+    }
+    pre {
+      padding: 0.5em 1em;
+      background-color: #eee;
+      overflow: auto;
+    }
+    #disqus_thread {
+      margin-top: 7em;
+    }
+    blockquote {
+      font-style: italic;
+      color: gray;
+    }
+    </style>
+
+    <!-- Google Analytics -->
+    
+      <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-102556838-1', 'auto');
+      ga('send', 'pageview');
+      </script>
+    
+  </head>
+  <body>
+
+    
+
+    <!-- header -->
+    <div class="ui fixed inverted menu">
+      <div class="ui container">
+        <span class="header item">
+          <!--<img class="logo" src="assets/images/logo.png">-->
+          Yassg Documentation
+        </span>
+        
+          
+      
+      
+      
+        <a href="../" class="item ">Home</a>
+      
+    
+        
+          
+      
+      
+      
+        <a href="../usage/" class="item ">Usage</a>
+      
+    
+        
+          
+      
+      
+      
+        <a href="./" class="item active">Markdown Features</a>
+      
+    
+        
+          
+      
+      
+      
+        <a href="../theming/" class="item ">Theming</a>
+      
+    
+        
+
+      <!-- GitHub -->
+      
+        <a class="item right floated" href="https://github.com/NiklasRosenstein/yassg"><i class="github icon"></i>NiklasRosenstein/yassg</a>
+      
+      </div>
+    </div>
+
+    <div class="ui grid container main">
+      <div class="twelve wide column">
+        <!-- content -->
+        <div class="ui text container">
+          
+            <h1>Markdown Features</h1>
+          
+          <p>Yassg allows you to plug in preprocessors for the markdown in your files.
+The default preprocessor, <code>"yassg:preprocess"</code>, brings various new syntaxes
+to the table.</p>
+<h2 id="references">References</h2>
+<p>References to other pages can be specified enclsoed in two brackets.
+Example:</p>
+<div class="codehilite"><pre><span></span><span class="n">Also</span><span class="p">,</span> <span class="n">be</span> <span class="n">sure</span> <span class="n">to</span> <span class="n">check</span> <span class="k">out</span> <span class="n">the</span> <span class="n">documentation</span> <span class="n">about</span> <span class="p">[[</span><span class="n">theming</span><span class="p">]].</span> <span class="n">The</span>
+<span class="p">[[</span><span class="n">Usage</span> <span class="n">page</span><span class="p">]](</span><span class="n">usage</span><span class="p">)</span> <span class="n">also</span> <span class="n">has</span> <span class="n">interesting</span> <span class="n">information</span><span class="p">.</span>
+</pre></div>
+
+
+<p>Renders as</p>
+<blockquote>
+<p>Also, be sure to check out the documentation about <a href="../theming/">Theming</a>. The
+<a href="../usage/">Usage page</a> also has interesting information.</p>
+</blockquote>
+<h2 id="shortcodes">Shortcodes</h2>
+<p>Shortcodes can be defined by a theme, but also by your site in the
+<code>shortcodes/</code> directory or in the <code>shortcodes.py</code> Python script. Shortcodes
+in HTML can make use of the Jinja2 templating engine. To use shortcodes in
+your Markdown page, you wrap the call to the shortcode Jinja2-style:</p>
+<div class="codehilite"><pre><span></span><span class="cp">{{</span> <span class="nv">gist</span><span class="o">(</span><span class="nv">user</span><span class="o">=</span><span class="s2">&quot;defunkt&quot;</span><span class="o">,</span> <span class="nv">id</span><span class="o">=</span><span class="s2">&quot;2059&quot;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+</pre></div>
+
+
+<p>HTML Example:</p>
+<div class="codehilite"><pre><span></span><span class="c">&lt;!-- shortcodes/gist.html --&gt;</span>
+{% set suffix = (&#39;?file=&#39; + file) if file else &#39;&#39; %}
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://gist.github.com/{{user}}/{{id}}{{suffix}}.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</pre></div>
+
+
+<p>Python Example:</p>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">gist</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+  <span class="k">return</span> <span class="s1">&#39;&lt;script src=&quot;https://gist.github.com/{user}/{id}{suffix}.js&quot;&gt;&lt;/script&gt;&#39;</span>\
+    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;?file=&#39;</span> <span class="o">+</span> <span class="nb">file</span><span class="p">)</span> <span class="k">if</span> <span class="nb">file</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<h3 id="built-in-shortcodes">Built-in shortcodes</h3>
+<h4 id="gistuser-id-file"><code>gist(user, id, file)</code></h4>
+<p>Embedd a GitHub Gist.</p>
+        </div>
+
+        <!-- disqus support -->
+        
+      </div>
+      <!-- Table of contents -->
+      <div class="four wide column">
+        
+          <h1>Table of Contents</h1>
+          <div class="toc">
+<ul>
+<li><a href="#references">References</a></li>
+<li><a href="#shortcodes">Shortcodes</a><ul>
+<li><a href="#built-in-shortcodes">Built-in shortcodes</a><ul>
+<li><a href="#gistuser-id-file">gist(user, id, file)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+        
+      </div>
+    </div>
+
+    <!-- footer -->
+    <div class="ui inverted vertical footer segment">
+      <div class="ui center aligned container">
+          
+            <p>Copyright &copy 2017 Niklas Rosenstein</p>
+          
+          <p>
+             &mdash; 
+            Generated with <a href="https://github.com/NiklasRosenstein/yassg">Yassg</a>
+          </p>
+      </div>
+    </div>
+  </body>
+</html>

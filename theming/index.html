@@ -4,7 +4,7 @@
     <title>Yassg Documentation</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.js"></script>
-    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="../static/style.css/">
     <style>
     h1, h2, h3, h4, h5, h6 {
       padding-top: 60px;
@@ -21,6 +21,10 @@
     }
     #disqus_thread {
       margin-top: 7em;
+    }
+    blockquote {
+      font-style: italic;
+      color: gray;
     }
     </style>
 
@@ -53,7 +57,7 @@
       
       
       
-        <a href=".." class="item ">Home</a>
+        <a href="../" class="item ">Home</a>
       
     
         
@@ -61,7 +65,7 @@
       
       
       
-        <a href="../usage" class="item ">Usage</a>
+        <a href="../usage/" class="item ">Usage</a>
       
     
         
@@ -69,7 +73,15 @@
       
       
       
-        <a href="." class="item active">Theming</a>
+        <a href="../markdown/" class="item ">Markdown Features</a>
+      
+    
+        
+          
+      
+      
+      
+        <a href="./" class="item active">Theming</a>
       
     
         
@@ -85,6 +97,9 @@
       <div class="twelve wide column">
         <!-- content -->
         <div class="ui text container">
+          
+            <h1>Theming</h1>
+          
           <h2 id="theme-structure">Theme Structure</h2>
 <p>A theme must provide a <code>page.html</code> template that will then be rendered using
 Jinja2. It may also contain other template files that it can include or extend,
