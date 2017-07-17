@@ -9,9 +9,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static/style.css') }}">
     <style>
-    h1, h2, h3, h4, h5, h6 {
-      padding-top: 60px;
-      margin-top: -50px;
+    body {
+      margin-top: 30px;
+    }
+    img[align=left] {
+      padding-right: 1em;
+    }
+    img[align=right] {
+      padding-left: 1em;
+    }
+    .ui.text::after {
+      clear: both;
+      content: "";
     }
     .ui.footer.segment {
       margin: 5em 0em 0em;
