@@ -103,13 +103,19 @@ def pages_from_directory(directory, recursive=True):
 
   for name in os.listdir(directory):
     path = os.path.join(directory, name)
+    if os.path.isdir(path):
+      new_path = os.path.join(path, 'index.md')
+      if os.path.isfile(new_path):
+        path = new_path
+        name = os.path.relpath(name, 'index.md')
+
     if name.endswith('.md'):
       name = name[:-3]
       with open(path) as fp:
         content = fp.read()
       content, details = parse_page_details(content, path)
       if details.get('content-from'):
-        with open(os.path.join(directory, details['content-from'])) as fp:
+        with open(os.path.join(os.path.dirname(path), details['content-from'])) as fp:
           content = fp.read()
       page = Page(name, content, details)
       pages[page.name] = page
@@ -126,6 +132,8 @@ def pages_from_directory(directory, recursive=True):
         if not page:
           # Check if there's a details TOML file for this directory.
           details_fn = path + '.toml'
+          if not os.path.isfile(details_fn):
+            details_fn = os.path.join(path, 'index.toml')
           if os.path.isfile(details_fn):
             with open(details_fn) as fp:
               details = load_page_details(fp.read(), details_fn)
