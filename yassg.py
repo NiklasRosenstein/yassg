@@ -90,7 +90,7 @@ def parse_page_details(content, filename=None):
   return content, options
 
 
-def pages_from_directory(directory, recursive=True):
+def pages_from_directory(directory, recursive=True, consider_index=True):
   """
   Creates a list of #Page#s from the Markdown files in *directory*. Page
   details are parsed using #parse_page_details(). If a directory contains
@@ -102,12 +102,14 @@ def pages_from_directory(directory, recursive=True):
   directories = []  # Save directories for later
 
   for name in os.listdir(directory):
+    if not consider_index and name == 'index.md': continue
     path = os.path.join(directory, name)
     if os.path.isdir(path):
       new_path = os.path.join(path, 'index.md')
       if os.path.isfile(new_path):
+        directories.append((name, path))
         path = new_path
-        name = os.path.relpath(name, 'index.md')
+        name += '.md'
 
     if name.endswith('.md'):
       name = name[:-3]
@@ -124,7 +126,7 @@ def pages_from_directory(directory, recursive=True):
 
   if recursive:
     for name, path in directories:
-      children = pages_from_directory(path, recursive=True)
+      children = pages_from_directory(path, recursive=True, consider_index=False)
       if children:
         # Get the page that contains these children, or create a page
         # without content (a folder) for them.
