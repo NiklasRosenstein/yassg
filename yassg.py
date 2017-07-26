@@ -27,6 +27,8 @@ import posixpath
 import shutil
 import re
 
+from functools import partial
+
 
 def ensure_dir(directory):
   try:
@@ -282,7 +284,6 @@ class Renderer(object):
       self.preprocessors.append(getattr(plugin, member))
 
     # Load all shortcodes.
-    shortcode_loader = JinjaAbsoluteFileLoader()
     for directory in [__directory__, os.path.join(self.theme_dir), 'theme', '.']:
       script = os.path.join(directory, 'shortcodes.py')
       if os.path.isfile(script):
@@ -294,9 +295,12 @@ class Renderer(object):
       if os.path.isdir(shortcodesdir):
         for name in os.listdir(shortcodesdir):
           if not name.endswith('.html'): continue
-          filename = os.path.join(shortcodesdir, name)
-          template = shortcode_loader.load(self.jinja_env, filename)
-          self.shortcodes[name[:-5]] = template.render
+          with open(os.path.join(shortcodesdir, name)) as fp:
+            template = self.jinja_env.from_string(fp.read())
+          self.shortcodes[name[:-5]] = partial(self._render_shortcode_template, template)
+
+  def _render_shortcode_template(self, template):
+    return template.render(page=self.current_page)
 
   def find_page(self, name):
     path = self._absolute_path(name)
