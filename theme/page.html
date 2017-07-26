@@ -132,8 +132,12 @@
           </div>
         {% endif %}
       </div>
+
       <!-- Table of contents -->
       <div class="four wide column">
+        {% if page.parent and page.parent.content %}
+          <a href="{{ url_for(page.parent) }}"><i class="arrow up icon"></i> {{ page.parent.detail('title', page.parent.name) }}</a>
+        {% endif %}
         {% if page.detail('render-toc', True) %}
           <h1>Table of Contents</h1>
           {{ md.toc|safe }}
