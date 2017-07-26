@@ -1,0 +1,3 @@
+{% for child in page.children %}
+* [{{ child.detail('title', child.name) }}]({{ url_for(child) }})
+{% endfor %}
