@@ -195,7 +195,7 @@ class Page(object):
 
   def sort(self):
     def key(p):
-      return (-p.detail('ordering-priority', 0), p.detail('title', p.name))
+      return (p.detail('ordering-priority', 0), p.detail('title', p.name))
     self.children.sort(key=key)
     for child in self.children:
       child.sort()
