@@ -41,6 +41,11 @@
     .ui.main img {
       max-width: 100%;
     }
+    {% if config['header-background-color'] %}
+    .ui.fixed.menu, .ui.footer.segment {
+      background-color: {{ config['header-background-color'] }};
+    }
+    {% endif %}
     </style>
 
     {% if config['google-analytics'] %}
