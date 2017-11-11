@@ -385,7 +385,7 @@ class Renderer(object):
     [recursion(page) for page in self.pages]
 
     dest_dir = os.path.join(directory, 'static')
-    static_dirs = [os.path.join(self.theme_dir, 'static'), 'theme/static']
+    static_dirs = [os.path.join(self.theme_dir, 'static')]
     for static_dir in static_dirs:
       if os.path.isdir(static_dir):
         print('copying from', static_dir, 'to', dest_dir)

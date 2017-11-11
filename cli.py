@@ -26,8 +26,8 @@ import yassg from './yassg.py'
 
 @click.command()
 @click.argument('build_dir', default='build')
-@click.option('-C', '--config', default='yassg.toml',
-  help='Configuration file. Defaults to "yassg.toml"')
+@click.option('-C', '--config', default=None,
+  help='Configuration file. Defaults to yassg.toml or .config/yassg.toml')
 @click.option('--commit', is_flag=True,
   help='Create a new commit after the build. Use only when the build '
     'directory is set-up as a git worktree.')
@@ -39,10 +39,20 @@ def main(build_dir, config, commit, push):
   Yet another static site generator.
   """
 
+  if not config:
+    config = 'yassg.toml'
+    if not os.path.isfile(config):
+      config = '.config/yassg.toml'
+
+  config_filename = config
   with open(config) as fp:
     config = toml.load(fp)
 
-  root = yassg.RootPage(yassg.pages_from_directory('content', recursive=True))
+  if 'content-directory' in config:
+    content_dir = os.path.join(os.path.dirname(config_filename), config['content-directory'])
+  else:
+    content_dir = 'content'
+  root = yassg.RootPage(yassg.pages_from_directory(content_dir, recursive=True))
   root.sort()
 
   renderer = yassg.Renderer(root, config)

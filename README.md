@@ -2,7 +2,7 @@
   YASSG - Yet another static site generator
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>
   <a href="http://niklasrosenstein.github.io/yassg/"><img src="https://img.shields.io/badge/docs-latest-green.svg"></a>
-</h1>
+</h2>
 
 YASSG is yet another static site generator based on
 

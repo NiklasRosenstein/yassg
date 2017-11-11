@@ -96,6 +96,12 @@ __github-repository__
 Themes commonly use this configuration parameter to include a link to a GitHub
 repository.
 
+__content-directory__
+
+Directory that contains the Markdown content files. If not specified, the
+`content/` directory of the current working directory is used. If specified,
+the path is considered relative to the configuration file.
+
 ## Directory layout
 
 Yassg will create a page for every markdown file in the **docs-dir**. If
