@@ -1,0 +1,26 @@
+{
+  "name": "@NiklasRosenstein/yassg",
+  "version": "0.0.2",
+  "license": "MIT",
+  "description": "Yet another static site generator.",
+  "authors": [
+    "rosensteinniklas@gmail.com"
+  ],
+  "main": "./yassg.py",
+  "bin": {
+    "yassg": "./cli.py"
+  },
+  "pip_dependencies": {
+    "Jinja2": ">=2.9.6",
+    "Markdown": ">=2.6.8",
+    "click": ">=6.7",
+    "toml": ">=0.9.2"
+  },
+  "include": [
+    "cli.py",
+    "yassg.py",
+    "theme/*",
+    "shortcodes/*",
+    "README.md"
+  ]
+}

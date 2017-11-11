@@ -1,16 +1,19 @@
-# Yet another static site generator
+<h2>
+  YASSG - Yet another static site generator
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>
+  <a href="http://niklasrosenstein.github.io/yassg/"><img src="https://img.shields.io/badge/docs-latest-green.svg"></a>
+</h1>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Documentation](https://img.shields.io/badge/docs-latest-green.svg)](http://niklasrosenstein.github.io/yassg/)
+YASSG is yet another static site generator based on
 
-Yassg is yet another static site generator based on [Node.py] \(with Python 3),
-Jinja2 and Markdown.
+* [Node.py](https://nodepy.org)
+* [Python 3.3+](https://python.org)
+* [Jinja2](http://jinja.pocoo.org/)
+* [Markdown](https://daringfireball.net/projects/markdown/syntax)
 
-[Node.py]: https://nodepy.org/
-
-__Features__
+### Features
 
 * Generates relative URLs to other pages
 * Powerful theming with plugins and Jinja2 templates
-* Markdown preprocessor allowing you to easily reference other pages and
-  make use of shortcodes
+* Extended Markdown preprocessor allowing you to easily reference other pages
+  and make use of shortcodes

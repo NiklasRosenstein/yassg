@@ -259,7 +259,7 @@ class Renderer(object):
     self.config = config
     self.preprocessors = []
     self.shortcodes = {}
-    self.theme_dir = config.get('theme', os.path.join(__directory__, 'theme'))
+    self.theme_dir = config.get('theme', str(module.directory.joinpath('theme')))
     self.jinja_env = jinja2.Environment(
       loader=jinja2.FileSystemLoader(['theme', self.theme_dir])
     )
@@ -284,7 +284,7 @@ class Renderer(object):
       self.preprocessors.append(getattr(plugin, member))
 
     # Load all shortcodes.
-    for directory in [__directory__, os.path.join(self.theme_dir), 'theme', '.']:
+    for directory in [str(module.directory), os.path.join(self.theme_dir), 'theme', '.']:
       script = os.path.join(directory, 'shortcodes.py')
       if os.path.isfile(script):
         script = require(os.path.abspath(script))
@@ -364,7 +364,7 @@ class Renderer(object):
     # Check if there's any plugin Python files in the themes dir.
     for name in os.listdir(self.theme_dir):
       if name.endswith('.yassg-theme.py'):
-        extension = require('./' + name, current_dir=self.theme_dir)
+        extension = require(os.path.join(self.theme_dir, name))
         extension.before_render(self)
 
     def recursion(page):
